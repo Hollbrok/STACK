@@ -2,27 +2,29 @@
 
 int main()
 {
-    FILE* res = fopen("log.txt", "wb");
-    node *ptop = NULL;
+    setlocale(LC_ALL, "russian");
+    stack_t Stack= {};
 
-    push(&ptop, 40);
-    push(&ptop, 0.012);
-    //push(&ptop, 222/0);
+    double zero = 0;
 
-    print(&ptop);
-    print(&ptop);
-    print(&ptop);
-    print(&ptop);
-    print(&ptop);
-    print(&ptop);
-    print(&ptop);
-    print(&ptop);
-    print(&ptop);
-    print(&ptop);
-    //printf("%.2lf \n", pop(&ptop));
+    stack_construct(8, &Stack);
+
+    push_stack(&Stack, 1);
+    push_stack(&Stack, 4);
+    push_stack(&Stack, 0/zero);
+    push_stack(&Stack, 2.444);
+    push_stack(&Stack, NAN);
+    push_stack(&Stack, 666);
+
+    //stack_dump(&Stack);
+
+    //pop_stack(&Stack);
+
+    stack_dump(&Stack);
+
+    stack_destruct(&Stack);
 
 
-    fclose(res);
 
-    return 0;
+    return 1337;
 }
