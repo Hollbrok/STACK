@@ -10,17 +10,19 @@
 #include <stdbool.h>
 #include <iostream>
 #include <conio.h>
+
 #include "stack_config.h"
+
 
 struct stack_t
 {
-    int CANARY_LEFT;
+    int canary_left_stack;
 
     double* data;
     int capacity;//max size
     int cur_size;//size now
 
-    int CANARY_RIGHT;
+    int canary_right_stack;
 
 };
 
@@ -36,5 +38,6 @@ void stack_dump(stack_t* Stack);
 
 int stack_verify(stack_t* Stack);
 
+char* error_print(int ERROR_STATE);
 
 #endif // STACK_H_INCLUDED
