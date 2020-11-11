@@ -1,17 +1,22 @@
 #ifndef STACK_CONFIG_H_INCLUDED
 #define STACK_CONFIG_H_INCLUDED
 
+const int CANARY_LEFT_STACK  = 0x1A3C3D7C;
+const int CANARY_RIGHT_STACK = 0xADF44A23;
+const int CANARY_LEFT_DATA   = 0x1BF3334A;
+const int CANARY_RIGHT_DATA  = 0xFDF4223A;
+const double POISON          = NAN;
+
+
 enum
 {
-    POISON              = -1,
     NULL_STACK_PTR      = 1,
     NULL_DATA_PTR       = 2,
     CUR_BIGGER_CAPACITY = 3,
     CUR_LESS_ZERO       = 4,
-    CAPCITY_LESS_ZERO   = 5,
-    CLASSIFY_CAPACITY   = 6,
+    CAPACITY_LESS_ZERO  = 6,
+    CLASSIFY_CAPACITY   = 5,
     CLASSIFY_CUR        = 7,
-    ERROR_STATE         = 0,
 };
 
 
