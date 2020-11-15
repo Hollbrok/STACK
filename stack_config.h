@@ -17,6 +17,10 @@ enum
     CAPACITY_LESS_ZERO  = 6,
     CLASSIFY_CAPACITY   = 5,
     CLASSIFY_CUR        = 7,
+    ERROR_DATA_LEFT     = 9,
+    ERROR_DATA_RIGHT    = 10,
+    ERROR_STACK_LEFT    = 11,
+    ERROR_STACK_RIGHT   = 12,
 };
 
 
