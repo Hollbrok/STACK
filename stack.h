@@ -7,21 +7,29 @@
 #include <locale.h>
 #include <math.h>
 #include <assert.h>
-#include <stdbool.h>
-#include <iostream>
-#include <conio.h>
 
 #include "stack_config.h"
 
+#define ASSERT_OK                                       \
+    if (stack_verify(Stack))                            \
+    {                                                   \
+        stack_dump(Stack);                              \
+        return;                                         \
+    }
+
+#define START_ACTIONS                                   \
+    setlocale(LC_ALL, "russian");                       \
+    stack_t Stack= {};                                  \
+    FILE* res = fopen("log_stack.txt", "w");            \
+    fclose(res);                                        \
+    double zero = 0;
 
 struct stack_t
 {
     int canary_left_stack;
-
     double* data;
     int capacity;//max size
     int cur_size;//size now
-
     int canary_right_stack;
 
 };
@@ -39,5 +47,7 @@ void stack_dump(stack_t* Stack);
 int stack_verify(stack_t* Stack);
 
 char* error_print(int ERROR_STATE);
+
+void add_memory(stack_t* Stack);
 
 #endif // STACK_H_INCLUDED
