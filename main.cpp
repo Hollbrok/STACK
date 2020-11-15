@@ -2,38 +2,43 @@
 
 int main()
 {
-    setlocale(LC_ALL, "russian");
-    stack_t Stack= {};
-
-    double zero = 0;
+    START_ACTIONS
 
     stack_construct(5, &Stack);
-    //stack_construct(5, &Stack);
-
-    push_stack(&Stack, 1);
     stack_dump(&Stack);
 
-    push_stack(&Stack, 4);
+
+
+    push_stack(&Stack, 111);
     stack_dump(&Stack);
 
-    push_stack(&Stack, 0/zero);
-    push_stack(&Stack, 2.444);
-    push_stack(&Stack, NAN);
-    push_stack(&Stack, 666);
+    //printf("1");
+
+    push_stack(&Stack, 13);
+    push_stack(&Stack, 1213);
+    push_stack(&Stack, 1374);
+    push_stack(&Stack, 19441);
+    push_stack(&Stack, 13412);
+    push_stack(&Stack, 617);
+
+    /*FILE* res = fopen("log_stack2.txt", "w");
+    fprintf(res, "\nAAAAAAAAAAAAA\n");
+    fclose(res); */
 
     stack_dump(&Stack);
+
+
 
     pop_stack(&Stack);
     pop_stack(&Stack);
 
+
+
     stack_dump(&Stack);
+    //stack_destruct(&Stack);
 
-    stack_destruct(&Stack);
-
-    /*FILE* finish = fopen("GOOD.txt", "a");
-    fprintf(finish, "GOOD");
-    fclose(finish);*/
-
+    pop_stack(&Stack);
+    pop_stack(&Stack);
     stack_dump(&Stack);
 
     FILE* finish = fopen("GOOD.txt", "w");
