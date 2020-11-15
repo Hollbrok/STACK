@@ -9,7 +9,6 @@ char* mode_dump              = "w";
 
 void stack_construct(int max_c, stack_t* Stack)
 {
-    //FILE* res = fopen("log_stack_error.txt", "w");
 
     if(Stack == nullptr || DOUBLE_CONSTRUCT)
     {
@@ -32,8 +31,10 @@ void stack_construct(int max_c, stack_t* Stack)
     else
     {
         FILE* res = fopen("log_stack.txt", "ab");
+        fprintf(res, "******************************************************************\n");
         ERROR_STATE = CAPACITY_LESS_ZERO;
         fprintf(res, "ERROR №%d: %s.\n", ERROR_STATE, error_print(ERROR_STATE));
+        fprintf(res, "******************************************************************\n");
         return;
     }
 
@@ -60,19 +61,21 @@ void stack_construct(int max_c, stack_t* Stack)
 
     }
 
+    ASSERT_OK
 }
 
 void stack_destruct(stack_t* Stack)
 {
-    if(stack_verify(Stack))
-    {
-        //DEBUG PRINTF в log_stack;
-        return;
-    }
+    ASSERT_OK
 
-    Stack->capacity = -2;
+    for(int i = -1; i <= Stack->capacity; i++)
+        Stack->data[i] = POISON;
+    free(Stack->data - 1);
+
     Stack->data = nullptr;
-    free(Stack);
+
+    Stack->cur_size = POISON;
+    Stack->capacity = POISON;
 }
 
 void push_stack(stack_t* Stack, double push_num)
@@ -80,125 +83,88 @@ void push_stack(stack_t* Stack, double push_num)
     assert(Stack);
     assert(push_num);
 
-    if(ERROR_STATE)
-        return;
+    ASSERT_OK
 
-    if(FILE_PRINT_DUMP)
+    FILE* res = fopen("log_stack.txt", "ab");
+
+    if(fpclassify(push_num) != FP_NORMAL)
     {
-        FILE_PRINT_DUMP = 0;
+        fclose(res);
+        stack_dump(Stack);
+        return;
+    }
+
+    else if(Stack->cur_size == Stack->capacity)
+    {
+        add_memory(Stack);
+        fclose(res);
+        Stack->data[Stack->cur_size++] = push_num;
     }
 
     else
     {
-        mode_dump = "a";
-    }
 
-    FILE* res = fopen("log_stack.txt", mode_dump);
-
-    if(stack_verify(Stack))
-    {
-        //fprintf(res, "Error is %d\nCUR_SIZE = %d", stack_verify(Stack), Stack->cur_size);
-        fclose(res);
-        return;
-    }
-
-    else if(fpclassify(push_num) != FP_NORMAL)//fpclassify(push_num) == FP_NAN || fpclassify(push_num) == FP_INFINITE || fpclassify(push_num) == -0 || push_num == EOF)
-    {
-        //fprintf(res, "\nsomebody was trying to do something BAD\n");
-        fclose(res);
-        return;
-    }
-
-    else if(Stack->cur_size >= Stack->capacity)
-    {
-        printf("                     В ходе push'a был достигнут максимально возможный размер стэка = %d\n", Stack->capacity);
-        fclose(res);
-        return;
-    }
-
-    else if(Stack->cur_size >= 0 && Stack->capacity > 0)
-    {
         fclose(res);
         Stack->data[Stack->cur_size++] = push_num;
     }
+
 }
 
 double pop_stack(stack_t* Stack)
 {
     if(ERROR_STATE)
-        exit(1);
+        return NAN;
 
     if(stack_verify(Stack))
-    {
-        //DEBUG PRINTF в log_stack;
         return NAN;
+
+    if(Stack->cur_size <= Stack->capacity / 2)
+    {
+        add_memory(Stack);
+        Stack->cur_size--;
+        double temp = Stack->data[Stack->cur_size];
+        Stack->data[Stack->cur_size] = POISON;
+        return temp;
     }
 
-    else if(Stack->cur_size >0)
+    else if(Stack->cur_size > 0)
     {
+        Stack->data[Stack->cur_size - 1] = POISON;
+
         return (Stack->data[Stack->cur_size--]);
     }
-
 }
 
 void stack_dump(stack_t* Stack)
 {
-    if(Stack == nullptr)
-        return;
 
-    if(FILE_PRINT_DUMP)
-    {
-        FILE_PRINT_DUMP = 0;
-    }
-
-    else
-    {
-        mode_dump = "a";
-    }
-
-
-    FILE* res = fopen("log_stack.txt", mode_dump);
+    FILE* res = fopen("log_stack.txt", "ab");
 
     fprintf(res, "******************************************************************\n");
 
-    if(stack_verify(Stack) == NULL_STACK_PTR)
+
+    if(ERROR_STATE)
     {
-        fprintf(res, "\n                    THERE IS NO STACK ..\n");
-        fprintf(res, "******************************************************************\n");
-        fclose(res);
-        return;
+        fprintf(res, "Stack (ERROR #%d : %s) [%p]\n", ERROR_STATE, error_print(ERROR_STATE), Stack);
     }
 
     else
     {
-        if(ERROR_STATE)
+        fprintf(res, "Stack(OK) [%p]\n", Stack);
+        fprintf(res, "size      = %d\n", Stack->cur_size);
+        fprintf(res, "capacity  = %d\n", Stack->capacity);
+
+        int cap = Stack->capacity;
+        int cur = Stack->cur_size;
+
+        for(int i = 0; i < cap; i++)
         {
-         fprintf(res, "Stack (ERROR #%d : %s)", ERROR_STATE, error_print(ERROR_STATE));
+            if(i < cur) fprintf(res, "*[%d] data = %.3lf\n", i, Stack->data[i]);
+            else fprintf(res, "[%d]  data = %.3lf\n", i, Stack->data[i]);
+
         }
-        fprintf(res, "Currently size = %d\n", Stack->cur_size);
-        fprintf(res, "Max size = %d\n", Stack->capacity);
-
-        int j = Stack->cur_size;
-
-        for(int i = 0; i < j; i++)
-        {
-            fprintf(res, "[%d] data = %.3lf\n", i, Stack->data[i]);
-            if(i == j - 1)
-            {
-                //fprintf(res, "******************************************************************");
-            }
-        }
-
-        /*int j = Stack->cur_size;
-        if(!j)
-            fprintf(res, "\n Stack is empty\n");
-        for(int i = 0; i < j; i++)
-        {
-            if(i == 0) fprintf(res, "                    @*********************@\n");
-            fprintf(res, "                    @Number[%d] = %6lf @\n", i + 1, Stack->data[i]);
-            if(i == j - 1) fprintf(res, "                    @*********************@\n");
-        }*/
     }
+
 
     fprintf(res, "******************************************************************\n\n\n");
     fclose(res);
@@ -206,36 +172,28 @@ void stack_dump(stack_t* Stack)
 
 int stack_verify(stack_t* Stack)
 {
-    //FILE* res = fopen("log_stack_error.txt", "w");
 
     if(Stack == nullptr)
     {
-        //fprintf(res, "Stack == nullptr\n");
-        //fclose(res);
+
         ERROR_STATE = NULL_STACK_PTR;
         return NULL_STACK_PTR;
     }
 
     else if(Stack->data == nullptr)
     {
-        //fprintf(res, "data == nullptr\n");
-        //fclose(res);
         ERROR_STATE = NULL_DATA_PTR;
         return NULL_DATA_PTR;
     }
 
-    else if(Stack->cur_size >= Stack->capacity)
+    else if(Stack->cur_size > Stack->capacity)
     {
-        //fprintf(res, "CUR_SIZE >= CAPACITY   (%d >= %d)\n", Stack->cur_size, Stack->capacity);
-        //fclose(res);
         ERROR_STATE = CUR_BIGGER_CAPACITY;
         return CUR_BIGGER_CAPACITY;
     }
 
     else if(Stack->cur_size < 0)
     {
-        //fprintf(res, "CUR_SIZE < 0, (%d)\n", Stack->cur_size);
-        //fclose(res);
         ERROR_STATE = CUR_LESS_ZERO;
         return CUR_LESS_ZERO;
 
@@ -243,8 +201,6 @@ int stack_verify(stack_t* Stack)
 
     else if(fpclassify(Stack->capacity) != FP_NORMAL)
     {
-        //fprintf(res, "CAPACITY is not a FP_NORMAL\n");
-        //fclose(res);
         ERROR_STATE = CLASSIFY_CAPACITY;
         return CLASSIFY_CAPACITY;
     }
@@ -253,8 +209,6 @@ int stack_verify(stack_t* Stack)
 
     else if(Stack->capacity < 0)
     {
-        //fprintf(res, "CAPACITY < 0\n, (%d)", Stack->capacity);
-        //fclose(res);
         ERROR_STATE = CAPACITY_LESS_ZERO;
         return CAPACITY_LESS_ZERO;
     }
@@ -262,19 +216,34 @@ int stack_verify(stack_t* Stack)
 
     else if(fpclassify(Stack->cur_size) != FP_NORMAL && Stack->cur_size > 0)
     {
-        //fprintf(res, "CUR_SIZE is not a FP_NORMAL\n");
-        //fclose(res);
         ERROR_STATE = CLASSIFY_CUR;
         return CLASSIFY_CUR;
     }
 
-    /*else if(DOUBLE_CONSTRUCT)
+    else if(Stack->data[-1] != CANARY_LEFT_DATA)
     {
-        fprintf(res, "double construct of stack");
-        fclose(res);
-        ERROR_STATE = 1;
-        return DOUBLE_CONSTRUCT;
-    } */
+        ERROR_STATE = ERROR_DATA_LEFT;
+        return ERROR_DATA_LEFT;
+
+    }
+
+    else if(Stack->data[Stack->capacity] != CANARY_RIGHT_DATA)
+    {
+        ERROR_STATE = ERROR_DATA_RIGHT;
+        return ERROR_DATA_RIGHT;
+    }
+
+    else if(Stack->canary_left_stack != CANARY_LEFT_STACK)
+    {
+        ERROR_STATE = ERROR_STACK_LEFT;
+        return ERROR_STACK_LEFT;
+    }
+
+    else if(Stack->canary_right_stack != CANARY_RIGHT_STACK)
+    {
+        ERROR_STATE = ERROR_STACK_RIGHT;
+        return ERROR_STACK_RIGHT;
+    }
 
     else
     {
@@ -300,4 +269,44 @@ char* error_print(int ERROR_STATE)
         return "CUR_SIZE IS NOT A NORMAL NUMBER";
     else if(ERROR_STATE == 8)
         return "DOUBLE CONSTRUCT";
+    else if(ERROR_STATE ==  9)
+        return "ERROR_DATA_LEFT";
+    else if(ERROR_STATE ==  10)
+        return "ERROR_DATA_RIGHT";
+    else if(ERROR_STATE ==  11)
+        return "ERROR_STACK_LEFT";
+    else if(ERROR_STATE ==  12)
+        return "ERROR_STACK_RIGHT";
+}
+
+void add_memory(stack_t* Stack)
+{
+
+    ASSERT_OK
+
+    if(Stack->cur_size == Stack->capacity)
+    {
+        Stack->capacity *= 2;
+
+        Stack->data = (double*) realloc(Stack->data - 1, (Stack->capacity + 2) * sizeof(double));
+
+        for(int i = Stack->capacity / 2 + 1; i <= Stack->capacity; i++)
+            Stack->data[i] = POISON;
+
+        Stack->data++;
+        Stack->data[Stack->capacity] = CANARY_RIGHT_DATA;
+
+    }
+
+    else if(Stack->cur_size <= Stack->capacity / 4 + 1) //как только уменьшиться кол-во элементов в 2 раза(не включительно)
+    {
+        Stack->capacity /= 2;
+        Stack->data = (double*) realloc(Stack->data - 1, (Stack->capacity +2) * sizeof(double));
+
+        Stack->data++;
+        Stack->data[Stack->capacity] = CANARY_RIGHT_DATA;
+
+    }
+
+    ASSERT_OK
 }
