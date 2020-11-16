@@ -2,48 +2,44 @@
 
 int main()
 {
-    START_ACTIONS
+    setlocale(LC_ALL, "russian");
+    FILE* res = fopen("log_stack.txt", "w");
+    fclose(res);
+    char* name = "";
 
-    stack_construct(5, &Stack);
+    START_ACTIONS(Stack);
+
+    Construct(&Stack, 5);
+
     stack_dump(&Stack);
 
+    push_stack(&Stack, 5464);
+    stack_dump(&Stack);
 
 
     push_stack(&Stack, 111);
+    push_stack(&Stack, 2);
+    push_stack(&Stack, 1);
     stack_dump(&Stack);
 
-    //printf("1");
-
-    push_stack(&Stack, 13);
-    push_stack(&Stack, 1213);
-    push_stack(&Stack, 1374);
-    push_stack(&Stack, 19441);
-    push_stack(&Stack, 13412);
-    push_stack(&Stack, 617);
-
-    /*FILE* res = fopen("log_stack2.txt", "w");
-    fprintf(res, "\nAAAAAAAAAAAAA\n");
-    fclose(res); */
-
+    push_stack(&Stack, 1);
     stack_dump(&Stack);
 
-
-
-    pop_stack(&Stack);
-    pop_stack(&Stack);
-
-
-
-    stack_dump(&Stack);
-    //stack_destruct(&Stack);
-
-    pop_stack(&Stack);
-    pop_stack(&Stack);
+    push_stack(&Stack, 1);
+    push_stack(&Stack, 2);
     stack_dump(&Stack);
 
-    FILE* finish = fopen("GOOD.txt", "w");
-    fprintf(finish, "GOOD");
-    fclose(finish);
+    stack_destruct(&Stack);
 
-    return 1337;
+//-----------------------------------------------------------------------------
+
+    START_ACTIONS(Stack2);
+    Construct(&Stack2, 4);
+
+    stack_dump(&Stack2);
+
+    push_stack(&Stack2, 44);
+    stack_dump(&Stack2);
+
+    return 0;
 }
