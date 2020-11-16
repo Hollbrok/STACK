@@ -272,43 +272,30 @@ char* error_print()
     {
         case 1:
             return "NULL STACK PTR";
-            break;
         case 2:
             return "NULL DATA PTR";
-            break;
         case 3:
             return "CUR BIGGER THAN CAPACITY";
-            break;
         case 4:
             return "CUR LESS THAN ZERO";
-            break;
         case 5:
             return "CAPACITY LESS THAN ZERO";
-            break;
         case 6:
             return "CAPACITY IS NOT A NORMAL NUMBER";
-            break;
         case 7:
             return "CUR_SIZE IS NOT A NORMAL NUMBER";
-            break;
         case 8:
             return "DOUBLE CONSTRUCT";
-            break;
         case 9:
             return "ERROR_DATA_LEFT";
-            break;
         case 10:
             return "ERROR_DATA_RIGHT";
-            break;
         case 11:
             return "ERROR_STACK_LEFT";
-            break;
         case 12:
             return "ERROR_STACK_RIGHT";
-            break;
         case 13:
             return "Somebody is trying to hack a stack";
-            break;
         default:
             return "ERROR IN error_print();\n";
 
