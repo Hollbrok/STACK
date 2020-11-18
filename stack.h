@@ -1,31 +1,62 @@
-#ifndef STACK_CONFIG_H_INCLUDED
-#define STACK_CONFIG_H_INCLUDED
+#ifndef STACK_H_INCLUDED
+#define STACK_H_INCLUDED
 
-const int CANARY_LEFT_STACK  = 0x1A3C3D7C;
-const int CANARY_RIGHT_STACK = 0xADF44A23;
-const int CANARY_LEFT_DATA   = 0x1BF3334A;
-const int CANARY_RIGHT_DATA  = 0xFDF4223A;
-const int REAL_MULTIPLIER    = 2;
-const int REAL_REDUCER       = 2 * REAL_MULTIPLIER;
-const int REAL_ADDER         = 4;
-const double POISON          = NAN;
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <locale.h>
+#include <math.h>
+#include <assert.h>
+#include <string.h>
+
+#include "stack_config.h"
+
+#define ASSERT_OK                                       \
+    if (stack_verify(Stack))                            \
+    {                                                   \
+        stack_dump(Stack);                              \
+        return;                                         \
+    }
+
+#define START_ACTIONS(a)                                \
+    stack_t a = {};                                     \
+
+#define Construct(a,b)                                  \
+        name = #a;                                      \
+        name++;                                         \
+        stack_construct(a, b, name);
 
 
-enum
+struct stack_t
 {
-    NULL_STACK_PTR      = 1,
-    NULL_DATA_PTR       = 2,
-    CUR_BIGGER_CAPACITY = 3,
-    CUR_LESS_ZERO       = 4,
-    CAPACITY_LESS_ZERO  = 6,
-    CLASSIFY_CAPACITY   = 5,
-    CLASSIFY_CUR        = 7,
-    ERROR_DATA_LEFT     = 9,
-    ERROR_DATA_RIGHT    = 10,
-    ERROR_STACK_LEFT    = 11,
-    ERROR_STACK_RIGHT   = 12,
-    HACK_STACK          = 13,
+    int canary_left_stack;
+
+    double* data;
+    char* name;
+    int capacity;//max size
+    int cur_size;//size now
+    int hash_stack;
+
+    int canary_right_stack;
+
 };
 
+void stack_construct(stack_t* Stack, int max_c, char* name);
 
-#endif // STACK_CONFIG_H_INCLUDED
+void stack_destruct(stack_t* Stack);
+
+void push_stack(stack_t* Stack, double push_num);
+
+void stack_dump(stack_t* Stack);
+
+void add_memory(stack_t* Stack);
+
+double pop_stack(stack_t* Stack);
+
+int stack_verify(stack_t* Stack);
+
+int hash_stack(stack_t* Stack);
+
+char* error_print();
+
+#endif // STACK_H_INCLUDED
