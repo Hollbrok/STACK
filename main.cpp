@@ -9,7 +9,7 @@ int main()
 
     START_ACTIONS(Stack);
 
-    Construct(&Stack, 5);
+    Construct(&Stack, 7);
 
     stack_dump(&Stack);
 
@@ -19,19 +19,25 @@ int main()
 
     push_stack(&Stack, 111);
     push_stack(&Stack, 2);
-    push_stack(&Stack, 1);
+    push_stack(&Stack, 2);
     stack_dump(&Stack);
 
     push_stack(&Stack, 1);
     stack_dump(&Stack);
+
+    Stack.data[2] = 24;// hack of the stack
 
     push_stack(&Stack, 1);
     push_stack(&Stack, 2);
     stack_dump(&Stack);
 
-    stack_destruct(&Stack);
+    pop_stack(&Stack);
+    pop_stack(&Stack);
+    pop_stack(&Stack);
+    pop_stack(&Stack);
+    stack_dump(&Stack);
 
-//-----------------------------------------------------------------------------
+    stack_destruct(&Stack);
 
     START_ACTIONS(Stack2);
     Construct(&Stack2, 4);
