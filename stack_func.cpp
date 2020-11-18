@@ -2,6 +2,8 @@
 
 int ERROR_STATE      = 0;
 int DOUBLE_CONSTRUCT = 0;
+char* addres   = "C:\\Users\\Danik\\Documents\\Задачи_СИ\\Projects\\Stack\\bin\\Debug\\log_stack.txt";
+
 
 void stack_construct(stack_t* Stack, int max_c, char* name)
 {
@@ -9,6 +11,7 @@ void stack_construct(stack_t* Stack, int max_c, char* name)
     {
         ERROR_STATE = DOUBLE_CONSTRUCT;
         stack_dump(Stack);
+        //system(R"(C:\Users\Danik\Documents\Задачи СИ\Projects\Stack\bin\Debug\log_stack.txt)");
         return;
     }
 
@@ -155,6 +158,16 @@ void stack_dump(stack_t* Stack)
     if(ERROR_STATE)
     {
         fprintf(res, "Stack (ERROR #%d : %s) [%p]. \n", ERROR_STATE, error_print(), Stack, Stack->hash_stack);
+
+        char* addres_n = "notepad ";
+        char* addres_f = (char*) calloc(100, sizeof(char));
+        addres_f = strcat(addres_f, addres_n);
+        addres_f = strcat(addres_f, addres);
+        //printf("%s", addres_f);
+
+        //printf("Stack (ERROR #%d : %s) [%p]. \n", ERROR_STATE, error_print(), Stack, Stack->hash_stack);
+        system(addres_f);
+        free(addres_f);
     }
 
     else
@@ -321,7 +334,7 @@ void add_memory(stack_t* Stack)
         hash_stack(Stack);
     }
 
-    else if(Stack->capacity <= REAL_ADDER)
+    else if(Stack->capacity < REAL_ADDER)
     {
         return;
     }
