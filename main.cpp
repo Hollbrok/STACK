@@ -1,9 +1,8 @@
+#define DOUBLE_T
 #include "stack.h"
 
 int main()
 {
-    DOUBLE_T
-
     setlocale(LC_ALL, "russian");
     FILE* res = fopen("log_stack.txt", "w");
     fclose(res);
