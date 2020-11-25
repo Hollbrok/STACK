@@ -8,8 +8,51 @@
 #include <math.h>
 #include <assert.h>
 #include <string.h>
+#include <limits.h>
 
 #include "stack_config.h"
+
+#define DOUBLE_T
+
+#ifdef DOUBLE_T
+    typedef double type_data;
+    const double POISON = NAN;
+    #define FORMAT "lf"
+#endif
+
+#define INT_T
+
+#ifdef INT_T
+    typedef int type_data;
+    const int POISON = INT_MAX;
+    #define FORMAT "d"
+#endif
+
+#define FLOAT_T
+
+#ifdef FLOAT_T
+    typedef float type_data;
+    const type_data POISON = NAN;
+    #define FORMAT "f"
+#endif
+
+#define CHAR_T
+
+#ifdef CHAR_T
+    typedef char type_data;
+    const type_data POISON = "я";
+    #define FORMAT "c"
+#endif
+
+#define STRING_T
+
+#ifdef STRING_T
+    typedef char* type_data;
+    const type_data POISON = nullptr;
+    #define FORMAT "s"
+#endif
+
+
 
 #define ASSERT_OK                                       \
     if (stack_verify(Stack))                            \
