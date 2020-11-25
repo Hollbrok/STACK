@@ -1,3 +1,4 @@
+#define INT_T
 #include "stack.h"
 
 int ERROR_STATE      = 0;
@@ -44,7 +45,7 @@ void stack_construct(stack_t* Stack, int max_c, char* name)
         return;
     }
 
-    Stack->data = (double*)calloc(max_c + 2, sizeof(double));
+    Stack->data = (type_data*)calloc(max_c + 2, sizeof(type_data));
 
     if (Stack->data == nullptr)
     {
@@ -83,11 +84,18 @@ void stack_destruct(stack_t* Stack)
     Stack->capacity = POISON;
 }
 
-void push_stack(stack_t* Stack, double push_num)
+void push_stack(stack_t* Stack, type_data push_num)
 {
     assert(push_num);
 
     ASSERT_OK
+
+    if(push_num >= POISON)
+    {
+        stack_dump(Stack);
+
+        return;
+    }
 
     FILE* res = fopen("log_stack.txt", "ab");
 
@@ -116,7 +124,7 @@ void push_stack(stack_t* Stack, double push_num)
 
 }
 
-double pop_stack(stack_t* Stack)
+type_data pop_stack(stack_t* Stack)
 {
     if(ERROR_STATE)
         return NAN;
@@ -128,7 +136,7 @@ double pop_stack(stack_t* Stack)
     {
         add_memory(Stack);
         Stack->cur_size--;
-        double temp = Stack->data[Stack->cur_size];
+        type_data temp = Stack->data[Stack->cur_size];
         Stack->data[Stack->cur_size] = POISON;
         hash_stack(Stack);
         return temp;
@@ -136,14 +144,14 @@ double pop_stack(stack_t* Stack)
 
     else if(Stack->cur_size > 0)
     {
-        double temp = Stack->data[Stack->cur_size - 1];
+        type_data temp = Stack->data[Stack->cur_size - 1];
         Stack->cur_size--;
         Stack->data[Stack->cur_size] = POISON;
         hash_stack(Stack);
         return temp;
     }
 
-    return 0;
+    return NAN;
 }
 
 void stack_dump(stack_t* Stack)
@@ -174,6 +182,37 @@ void stack_dump(stack_t* Stack)
     {
         fprintf(res, "Stack(OK) [%p]. \"%s\"\n", Stack, Stack->name);
         //fprintf(res, "The Name is \"%s\"\n", Stack->name);
+
+        char* type_string = "";
+
+        if(FORMAT == "lg")
+        {
+            type_string = "double";
+            //printf("double");
+        }
+        else if(FORMAT == "d")
+        {
+            type_string = "int";
+            //printf("int");
+        }
+        else if(FORMAT == "c")
+        {
+            type_string = "char";
+            //printf("char");
+        }
+        else if(FORMAT == "s")
+        {
+            type_string = "string";
+            //printf("string");
+        }
+        else
+        {
+            type_string = "ERROR";
+            //printf("ERROR");
+        }
+
+        //printf("%s", type_string);
+        fprintf(res, "Type of data is %s\n", type_string);
         fprintf(res, "Hash        = %d\n", Stack->hash_stack);
         fprintf(res, "size        = %d\n", Stack->cur_size);
         fprintf(res, "capacity    = %d\n", Stack->capacity);
@@ -183,8 +222,8 @@ void stack_dump(stack_t* Stack)
 
         for(int i = 0; i < cap; i++)
         {
-            if(i < cur) fprintf(res, "*[%d] data   = %.3lf\n", i, Stack->data[i]);
-            else fprintf(res, "[%d]  data   = %.3lf\n", i, Stack->data[i]);
+            if(i < cur) fprintf(res, "*[%d] data   = %" FORMAT "\n", i, Stack->data[i]);
+            else fprintf(res, "[%d]  data   = %" FORMAT " (POISON)\n", i, Stack->data[i]);
 
         }
     }
@@ -322,7 +361,7 @@ void add_memory(stack_t* Stack)
     if(Stack->capacity == 0)
     {
         Stack->capacity = REAL_ADDER;
-        Stack->data     = (double*) realloc(Stack->data - 1, (Stack->capacity + 2) * sizeof(double));
+        Stack->data     = (type_data*) realloc(Stack->data - 1, (Stack->capacity + 2) * sizeof(type_data));
 
         for(int i = 0; i <= Stack->capacity; i++)
         {
@@ -334,16 +373,11 @@ void add_memory(stack_t* Stack)
         hash_stack(Stack);
     }
 
-    else if(Stack->capacity < REAL_ADDER)
-    {
-        return;
-    }
-
     else if(Stack->cur_size == Stack->capacity)
     {
         Stack->capacity *= 2;
 
-        Stack->data = (double*) realloc(Stack->data - 1, (Stack->capacity + 2) * sizeof(double));
+        Stack->data = (type_data*) realloc(Stack->data - 1, (Stack->capacity + 2) * sizeof(type_data));
 
         for(int i = Stack->capacity / 2 + 1; i <= Stack->capacity; i++)
             Stack->data[i] = POISON;
@@ -354,10 +388,17 @@ void add_memory(stack_t* Stack)
 
     }
 
+    else if(Stack->cur_size <= REAL_ADDER)
+    {
+        return;
+    }
+
+
+
     else if(Stack->cur_size <= Stack->capacity / REAL_REDUCER + 1) //как только уменьшиться кол-во элементов в 4 раза(не включительно)
     {
         Stack->capacity /= 2;
-        Stack->data = (double*) realloc(Stack->data - 1, (Stack->capacity + 2) * sizeof(double));
+        Stack->data = (type_data*) realloc(Stack->data - 1, (Stack->capacity + 2) * sizeof(type_data));
 
         Stack->data++;
         Stack->data[Stack->capacity] = CANARY_RIGHT_DATA;
