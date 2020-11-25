@@ -2,6 +2,8 @@
 
 int main()
 {
+    DOUBLE_T
+
     setlocale(LC_ALL, "russian");
     FILE* res = fopen("log_stack.txt", "w");
     fclose(res);
@@ -9,7 +11,7 @@ int main()
 
     START_ACTIONS(Stack);
 
-    Construct(&Stack, 7);
+    Construct(&Stack, 3);
 
     stack_dump(&Stack);
 
@@ -25,7 +27,7 @@ int main()
     push_stack(&Stack, 1);
     stack_dump(&Stack);
 
-    Stack.data[2] = 24;// hack of the stack
+    //Stack.data[2] = 24;// hack of the stack
 
     push_stack(&Stack, 1);
     push_stack(&Stack, 2);
@@ -38,6 +40,7 @@ int main()
     stack_dump(&Stack);
 
     stack_destruct(&Stack);
+    //stack_destruct(&Stack);
 
     START_ACTIONS(Stack2);
     Construct(&Stack2, 4);
