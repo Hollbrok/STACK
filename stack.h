@@ -74,7 +74,7 @@ struct stack_t
 {
     int canary_left_stack;
 
-    double* data;
+    type_data* data;
     char* name;
     int capacity;//max size
     int cur_size;//size now
