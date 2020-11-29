@@ -14,7 +14,7 @@ int main()
 
     stack_dump(&Stack);
 
-    push_stack(&Stack, 5464);
+    push_stack(&Stack, 5460);
     stack_dump(&Stack);
 
 
