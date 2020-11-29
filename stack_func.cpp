@@ -3,7 +3,7 @@
 
 int ERROR_STATE      = 0;
 int DOUBLE_CONSTRUCT = 0;
-char* addres   = "C:\\Users\\Danik\\Documents\\Задачи_СИ\\Projects\\Stack\\bin\\Debug\\log_stack.txt";
+char* addres         = "C:\\Users\\Danik\\Documents\\Задачи_СИ\\Projects\\Stack\\bin\\Debug\\log_stack.txt";
 
 
 void stack_construct(stack_t* Stack, int max_c, char* name)
