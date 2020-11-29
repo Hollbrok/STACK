@@ -88,7 +88,7 @@ void stack_construct(stack_t* Stack, int max_c, char* name);
 
 void stack_destruct(stack_t* Stack);
 
-void push_stack(stack_t* Stack, double push_num);
+void push_stack(stack_t* Stack, type_data push_num);
 
 void stack_dump(stack_t* Stack);
 
