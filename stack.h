@@ -74,11 +74,11 @@ struct stack_t
 {
     int canary_left_stack;
 
-    type_data* data;
-    char* name;
-    int capacity;//max size
-    int cur_size;//size now
-    int hash_stack;
+    type_data* data = nullptr;
+    char* name      = nullptr;
+    int capacity    = 0;//max size
+    int cur_size    = 0;//size now
+    int hash_stack  = 0;// hash
 
     int canary_right_stack;
 
