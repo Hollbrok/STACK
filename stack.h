@@ -14,7 +14,7 @@
 #include "stack_config.h"
 //#include "def_type.h"
 
-#define STRING_T
+//#define STRING_T
 
 #ifdef DOUBLE_T
     typedef double type_data;
@@ -73,8 +73,26 @@
     //const char* TYPE = "char";
 #endif
 
-//#undef STRING_T
+#ifdef LOW_SECURE // только проверка на Stack == nullptr, stack_construct
+    const int low_sec   = 1;
+    const int med_sec   = 0;
+    const int high_sec  = 0;
+    //const char* sec_lvl = "LOW";
+#endif LOW_SECURE
 
+#ifdef MEDIUM_SECURE // все проверки, кроме хэширования и канареек
+    const int low_sec   = 0;
+    const int med_sec   = 1;
+    const int high_sec  = 0;
+   // const char* sec_lvl = "MEDIUM";
+#endif MEDIUM_SECURE
+
+#ifdef HIGH_SECURE // все проверки
+    const int low_sec   = 0;
+    const int med_sec   = 0;
+    const int high_sec  = 1;
+    //const char* sec_lvl = "HIGH";
+#endif HIGH_SECURE
 
 
 struct stack_t
@@ -132,5 +150,7 @@ int stack_verify(stack_t* Stack);
 int hash_stack(stack_t* Stack);
 
 char* error_print();
+
+char* define_lvl();
 
 #endif // STACK_H_INCLUDED
