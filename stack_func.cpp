@@ -6,9 +6,6 @@
 #undef LOW_SECURE
 #undef STRING_T
 
-//#include "stack.h"
-
-
 int ERROR_STATE      = 0;
 int DOUBLE_CONSTRUCT = 0;
 char* addres         = "C:\\Users\\Danik\\Documents\\Задачи_СИ\\Projects\\Stack\\bin\\Debug\\log_stack.txt";
@@ -20,7 +17,6 @@ void stack_construct(stack_t* Stack, int max_c, char* name)
     {
         ERROR_STATE = DOUBLE_CONSTRUCT;
         stack_dump(Stack);
-        //system(R"(C:\Users\Danik\Documents\Задачи СИ\Projects\Stack\bin\Debug\log_stack.txt)");
         return;
     }
 
@@ -83,7 +79,9 @@ void stack_destruct(stack_t* Stack)
 
     for(int i = -1; i <= Stack->capacity; i++)
         Stack->data[i] = POISON;
-    free(Stack->data - 1);
+
+    type_data* pointer =(type_data*) ((char*)Stack->data - sizeof(type_data));
+    free(pointer);
 
     Stack->data = nullptr;
 
@@ -94,14 +92,12 @@ void stack_destruct(stack_t* Stack)
 void push_stack(stack_t* Stack, type_data push_num)
 {
     assert(push_num);
-    //printf("ffff\n");
     ASSERT_OK
 
     FILE* res = fopen("log_stack.txt", "ab");
 
     if(push_num >= POISON && (FORMAT != "s") && (FORMAT != "c"))
     {
-        //printf("ffff\n");
         stack_dump(Stack);
 
         return;
@@ -184,22 +180,15 @@ void stack_dump(stack_t* Stack)
     char mass[67] = "******************************************************************";
 
     FILE* res = fopen("log_stack.txt", "ab");
-    printf("9\n");
     fprintf(res, "%*s\n", 66, mass);
-    printf("10\n");
-    //printf("7");
+    
     if(ERROR_STATE)
     {
-        //printf("9");
         fprintf(res, "Stack (ERROR #%d : %s) [%p]. \nSecurity lvl is %s", ERROR_STATE, error_print(), Stack, Stack->hash_stack, sec_lvl);
-        //printf("9");
         char* addres_n = "notepad ";
         char* addres_f = (char*) calloc(100, sizeof(char));
         addres_f = strcat(addres_f, addres_n);
         addres_f = strcat(addres_f, addres);
-        //printf("%s", addres_f);
-
-        //printf("Stack (ERROR #%d : %s) [%p]. \n", ERROR_STATE, error_print(), Stack, Stack->hash_stack);
         system(addres_f);
         free(addres_f);
     }
@@ -207,75 +196,49 @@ void stack_dump(stack_t* Stack)
     else
     {
         fprintf(res, "Stack(OK) [%p]. \"%s\"\n", Stack, Stack->name);
-        //fprintf(res, "The Name is \"%s\"\n", Stack->name);
 
         char* type_string = "";
-        //printf("\n11\n");
         if(FORMAT == "lg")
         {
             type_string = "double";
-            //printf("double");
         }
         else if(FORMAT == "d")
         {
             type_string = "int";
-            //printf("int");
         }
         else if(FORMAT == "c")
         {
             type_string = "char";
-            //printf("char");
         }
         else if(FORMAT == "s")
         {
             type_string = "string";
-            //printf("string");
         }
         else
         {
             type_string = "ERROR";
-            //printf("ERROR");
         }
-
-        //printf("%s", type_string);
+        
         fprintf(res, "Security lvl is %s\n", sec_lvl);
         fprintf(res, "Type of data is %s\n", type_string);
         fprintf(res, "Hash        = %d\n", Stack->hash_stack);
         fprintf(res, "size        = %d\n", Stack->cur_size);
         fprintf(res, "capacity    = %d\n", Stack->capacity);
-        //printf("\nStack_dump\n");
         int cap = Stack->capacity;
         int cur = Stack->cur_size;
-        //printf("capacity = ");
-        //printf("%d\n", Stack->capacity);
-        //printf("cur = ");
-        //printf("%d", Stack->cur_size);
 
         for(int i = 0; i < cap; i++)
         {
-            //printf("\ni = %d\n", i);
             if(i < cur)
             {
-                //printf("Stack ->data = ");
-                //printf("%c", Stack->data[i]);
                 fprintf(res, "*[%d] data   = %" FORMAT "\n", i, Stack->data[i]);
-                //printf("AFTER 1printf = %d", i);
             }
 
             else
             {
-                //printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-                //printf(FORMAT);
-                //printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-                //printf("Stack ->data = ");
-                //printf("%c\n", Stack->data[i]);
                 fprintf(res, "*[%d] data   = %" FORMAT " (POISON)\n", i, POISON);
-
-                //printf("GOOD");
-
             }
         }
-        //printf("AFTER PRINTF all stack");
     }
 
 
@@ -288,40 +251,31 @@ int stack_verify(stack_t* Stack)
 
     if((Stack == nullptr))
     {
-    //printf("2222\n");
         ERROR_STATE = NULL_STACK_PTR;
-        //printf("1\n");
         return NULL_STACK_PTR;
     }
 
     else if((Stack->hash_stack != hash_stack(Stack)) && ((!low_sec) && (!med_sec)))
     {
-        //printf("2222\n");
         ERROR_STATE = HACK_STACK;
-        //printf("1\n");
         return HACK_STACK;
     }
 
     else if(Stack->data == nullptr)
     {
-        //printf("2222\n");
         ERROR_STATE = NULL_DATA_PTR;
-        //printf("1\n");
         return NULL_DATA_PTR;
     }
 
     else if((Stack->cur_size > Stack->capacity) && (!low_sec))
     {
         ERROR_STATE = CUR_BIGGER_CAPACITY;
-        //printf("1\n");
         return CUR_BIGGER_CAPACITY;
     }
 
     else if((Stack->cur_size < 0) && (!low_sec))
     {
-        //printf("2222\n");
         ERROR_STATE = CUR_LESS_ZERO;
-        //printf("1\n");
         return CUR_LESS_ZERO;
 
     }
@@ -330,17 +284,13 @@ int stack_verify(stack_t* Stack)
         {
             if(!isnan(Stack->capacity))
             {
-                //printf("2222\n");
                 ERROR_STATE = CLASSIFY_CAPACITY;
-                //printf("1\n");
                 return CLASSIFY_CAPACITY;
             }
         }
     else if((Stack->capacity < 0) && (!low_sec))
     {
-        //printf("2222\n");
         ERROR_STATE = CAPACITY_LESS_ZERO;
-        //printf("1\n");
         return CAPACITY_LESS_ZERO;
     }
 
@@ -349,41 +299,31 @@ int stack_verify(stack_t* Stack)
         {
             if(isnan(Stack->cur_size) && Stack->cur_size > 0)
             {
-                //printf("2222\n");
                 ERROR_STATE = CLASSIFY_CUR;
-                //printf("1\n");
                 return CLASSIFY_CUR;
             }
         }
     else if((Stack->data[-1] != CANARY_LEFT_DATA) && ((!low_sec) && (!med_sec)))
     {
-        //printf("2222\n");
         ERROR_STATE = ERROR_DATA_LEFT;
-        //printf("1\n");
         return ERROR_DATA_LEFT;
-
     }
 
     else if((Stack->data[Stack->capacity] != (type_data) CANARY_RIGHT_DATA) && ((!low_sec) && (!med_sec)))
     {
-        //printf("2222\n");
         ERROR_STATE = ERROR_DATA_RIGHT;
-        //printf("1\n");
         return ERROR_DATA_RIGHT;
     }
 
     else if((Stack->canary_left_stack != (int) CANARY_L_STACK) && ((!low_sec) && (!med_sec)))
     {
-        //printf("2222\n");
         ERROR_STATE = ERROR_STACK_LEFT;
-        //printf("1\n");
         return ERROR_STACK_LEFT;
     }
 
     else if((Stack->canary_right_stack != (int) CANARY_R_STACK) && ((!low_sec) && (!med_sec)))
     {
         ERROR_STATE = ERROR_STACK_RIGHT;
-        //printf("1\n");
         return ERROR_STACK_RIGHT;
     }
 
@@ -392,8 +332,6 @@ int stack_verify(stack_t* Stack)
         //printf("1\n");
         return 0;
     }
-
-    //printf("3\n");
 }
 
 char* error_print()
