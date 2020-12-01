@@ -1,9 +1,9 @@
 #define STRING_T
-//#define LOW
+#define LOW_SECURE
 
 #include "stack.h"
 
-//#undef LOW
+#undef LOW_SECURE
 #undef STRING_T
 
 
@@ -12,14 +12,15 @@
 int main()
 {
     setlocale(LC_ALL, "russian");
+
     FILE* res = fopen("log_stack.txt", "w");
     fclose(res);
     char* name = "";
 
     START_ACTIONS(Stack);
 
-    Construct(&Stack, 9);
-    printf("00");
+    Construct(&Stack, 1);
+    //printf("00");
     stack_dump(&Stack);
     //printf("\nafter 1 dump\n");
 
@@ -33,6 +34,8 @@ int main()
 
     //Stack.data[2] = 24;// hack of the stack
 
+    pop_stack(&Stack);
+    pop_stack(&Stack);
     pop_stack(&Stack);
     pop_stack(&Stack);
     //pop_stack(&Stack);
