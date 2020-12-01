@@ -1,0 +1,94 @@
+******************************************************************
+Stack(OK) [0064FEDC]. "Stack"
+Type of data is string
+Hash        = 0
+size        = 0
+capacity    = 9
+*[0] data   = LLLLLLLLLLL (POISON)
+*[1] data   = LLLLLLLLLLL (POISON)
+*[2] data   = LLLLLLLLLLL (POISON)
+*[3] data   = LLLLLLLLLLL (POISON)
+*[4] data   = LLLLLLLLLLL (POISON)
+*[5] data   = LLLLLLLLLLL (POISON)
+*[6] data   = LLLLLLLLLLL (POISON)
+*[7] data   = LLLLLLLLLLL (POISON)
+*[8] data   = LLLLLLLLLLL (POISON)
+******************************************************************
+
+******************************************************************
+Stack(OK) [0064FEDC]. "Stack"
+Type of data is string
+Hash        = 5859910
+size        = 1
+capacity    = 9
+*[0] data   = faa
+*[1] data   = LLLLLLLLLLL (POISON)
+*[2] data   = LLLLLLLLLLL (POISON)
+*[3] data   = LLLLLLLLLLL (POISON)
+*[4] data   = LLLLLLLLLLL (POISON)
+*[5] data   = LLLLLLLLLLL (POISON)
+*[6] data   = LLLLLLLLLLL (POISON)
+*[7] data   = LLLLLLLLLLL (POISON)
+*[8] data   = LLLLLLLLLLL (POISON)
+******************************************************************
+
+******************************************************************
+Stack(OK) [0064FEDC]. "Stack"
+Type of data is string
+Hash        = 14354032
+size        = 2
+capacity    = 9
+*[0] data   = faa
+*[1] data   = gaa
+*[2] data   = LLLLLLLLLLL (POISON)
+*[3] data   = LLLLLLLLLLL (POISON)
+*[4] data   = LLLLLLLLLLL (POISON)
+*[5] data   = LLLLLLLLLLL (POISON)
+*[6] data   = LLLLLLLLLLL (POISON)
+*[7] data   = LLLLLLLLLLL (POISON)
+*[8] data   = LLLLLLLLLLL (POISON)
+******************************************************************
+
+******************************************************************
+Stack(OK) [0064FEDC]. "Stack"
+Type of data is string
+Hash        = 0
+size        = 0
+capacity    = 9
+*[0] data   = LLLLLLLLLLL (POISON)
+*[1] data   = LLLLLLLLLLL (POISON)
+*[2] data   = LLLLLLLLLLL (POISON)
+*[3] data   = LLLLLLLLLLL (POISON)
+*[4] data   = LLLLLLLLLLL (POISON)
+*[5] data   = LLLLLLLLLLL (POISON)
+*[6] data   = LLLLLLLLLLL (POISON)
+*[7] data   = LLLLLLLLLLL (POISON)
+*[8] data   = LLLLLLLLLLL (POISON)
+******************************************************************
+
+******************************************************************
+Stack(OK) [0064FEC0]. "Stack2"
+Type of data is string
+Hash        = 0
+size        = 0
+capacity    = 5
+*[0] data   = LLLLLLLLLLL (POISON)
+*[1] data   = LLLLLLLLLLL (POISON)
+*[2] data   = LLLLLLLLLLL (POISON)
+*[3] data   = LLLLLLLLLLL (POISON)
+*[4] data   = LLLLLLLLLLL (POISON)
+******************************************************************
+
+******************************************************************
+Stack(OK) [0064FEC0]. "Stack2"
+Type of data is string
+Hash        = 5859915
+size        = 1
+capacity    = 5
+*[0] data   = jksbz
+*[1] data   = LLLLLLLLLLL (POISON)
+*[2] data   = LLLLLLLLLLL (POISON)
+*[3] data   = LLLLLLLLLLL (POISON)
+*[4] data   = LLLLLLLLLLL (POISON)
+******************************************************************
+
