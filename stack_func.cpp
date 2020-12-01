@@ -1,10 +1,17 @@
-#define CHAR_T
+/*#define STRING_T
+//#define LOW
+
 #include "stack.h"
-#undef CHAR_T
+
+//#undef LOW
+#undef STRING_T */
+
+#include "stack.h"
+
 
 int ERROR_STATE      = 0;
 int DOUBLE_CONSTRUCT = 0;
-char* addres   = "C:\\Users\\Danik\\Documents\\Задачи_СИ\\Projects\\Stack\\bin\\Debug\\log_stack.txt";
+char* addres         = "C:\\Users\\Danik\\Documents\\Задачи_СИ\\Projects\\Stack\\bin\\Debug\\log_stack.txt";
 
 
 void stack_construct(stack_t* Stack, int max_c, char* name)
@@ -17,14 +24,14 @@ void stack_construct(stack_t* Stack, int max_c, char* name)
         return;
     }
 
-    if(Stack->canary_left_stack == CANARY_LEFT_STACK || Stack->canary_right_stack == CANARY_RIGHT_STACK)
+    if(Stack->canary_left_stack == CANARY_L_STACK || Stack->canary_right_stack == CANARY_R_STACK)
     {
         DOUBLE_CONSTRUCT = 8;
         return;
     }
 
-    Stack->canary_left_stack = CANARY_LEFT_STACK;
-    Stack->canary_right_stack = CANARY_RIGHT_STACK;
+    Stack->canary_left_stack = (int) CANARY_L_STACK;
+    Stack->canary_right_stack = (int) CANARY_R_STACK;
 
 
     Stack->cur_size   = 0;
@@ -91,7 +98,9 @@ void push_stack(stack_t* Stack, type_data push_num)
     //printf("ffff\n");
     ASSERT_OK
 
-    if(push_num >= POISON)
+    FILE* res = fopen("log_stack.txt", "ab");
+
+    if(push_num >= POISON && (FORMAT != "s") && (FORMAT != "c"))
     {
         //printf("ffff\n");
         stack_dump(Stack);
@@ -99,21 +108,49 @@ void push_stack(stack_t* Stack, type_data push_num)
         return;
     }
 
-    FILE* res = fopen("log_stack.txt", "ab");
 
-    /*if(!isalpha(push_num))
-        if(isnan(push_num))
-        {
-            fclose(res);
-            stack_dump(Stack);
-            return;
-        }
-      */
-    if(isnan(push_num))
+    //printf("\n\n()())())()()()() FORMAT is %s ()()()()()()()\n\n", FORMAT);
+    if((FORMAT == "d") || (FORMAT == "f") || (FORMAT == "lg"))
     {
-        stack_dump(Stack);
-        return;
+            /*if(isnan(push_num))
+            {
+                fclose(res);
+                stack_dump(Stack);
+                return;
+            }   */
     }
+
+
+    if((FORMAT == "s") || (FORMAT == "c"))
+    {
+        if(Stack->cur_size == Stack->capacity)
+        {
+            add_memory(Stack);
+            fclose(res);
+            Stack->data[Stack->cur_size++] = push_num;
+            hash_stack(Stack);
+        }
+
+        else
+        {
+
+            fclose(res);
+            Stack->data[Stack->cur_size++] = push_num;
+            hash_stack(Stack);
+        }
+    }
+
+
+    //printf("\n\n()())())()()()() FORMAT is %s ()()()()()()()\n\n", FORMAT);
+    /*else if((FORMAT == "d") || (FORMAT == "f") || (FORMAT == "lg"))
+    {
+            if(isnan(push_num))
+            {
+                fclose(res);
+                stack_dump(Stack);
+                return;
+            }
+    } */
 
     else if(Stack->cur_size == Stack->capacity)
     {
@@ -138,8 +175,7 @@ type_data pop_stack(stack_t* Stack)
     if(ERROR_STATE)
         return POISON;
 
-    if(stack_verify(Stack))
-        return POISON;
+    ASSERT_POP_OK
 
     if(Stack->cur_size <= Stack->capacity / REAL_MULTIPLIER + 1)
     {
@@ -148,6 +184,7 @@ type_data pop_stack(stack_t* Stack)
         type_data temp = Stack->data[Stack->cur_size];
         Stack->data[Stack->cur_size] = POISON;
         hash_stack(Stack);
+        ASSERT_POP_OK
         return temp;
     }
 
@@ -157,10 +194,13 @@ type_data pop_stack(stack_t* Stack)
         Stack->cur_size--;
         Stack->data[Stack->cur_size] = POISON;
         hash_stack(Stack);
+        ASSERT_POP_OK
         return temp;
     }
 
+    ASSERT_POP_OK
     return  POISON;
+
 }
 
 void stack_dump(stack_t* Stack)
@@ -226,39 +266,39 @@ void stack_dump(stack_t* Stack)
         fprintf(res, "Hash        = %d\n", Stack->hash_stack);
         fprintf(res, "size        = %d\n", Stack->cur_size);
         fprintf(res, "capacity    = %d\n", Stack->capacity);
-        printf("\nStack_dump\n");
+        //printf("\nStack_dump\n");
         int cap = Stack->capacity;
         int cur = Stack->cur_size;
-        printf("capacity = ");
-        printf("%d\n", Stack->capacity);
-        printf("cur = ");
-        printf("%d", Stack->cur_size);
+        //printf("capacity = ");
+        //printf("%d\n", Stack->capacity);
+        //printf("cur = ");
+        //printf("%d", Stack->cur_size);
 
         for(int i = 0; i < cap; i++)
         {
-            printf("\ni = %d\n", i);
+            //printf("\ni = %d\n", i);
             if(i < cur)
             {
-                printf("Stack ->data = ");
-                printf("%c", Stack->data[i]);
+                //printf("Stack ->data = ");
+                //printf("%c", Stack->data[i]);
                 fprintf(res, "*[%d] data   = %" FORMAT "\n", i, Stack->data[i]);
-                printf("AFTER 1printf = %d", i);
+                //printf("AFTER 1printf = %d", i);
             }
 
             else
             {
-                printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-                printf(FORMAT);
-                printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-                printf("Stack ->data = ");
-                printf("%c\n", Stack->data[i]);
+                //printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+                //printf(FORMAT);
+                //printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+                //printf("Stack ->data = ");
+                //printf("%c\n", Stack->data[i]);
                 fprintf(res, "*[%d] data   = %" FORMAT " (POISON)\n", i, POISON);
 
-                printf("GOOD");
+                //printf("GOOD");
 
             }
         }
-        printf("AFTER PRINTF all stack");
+        //printf("AFTER PRINTF all stack");
     }
 
 
@@ -355,7 +395,7 @@ int stack_verify(stack_t* Stack)
         return ERROR_DATA_RIGHT;
     }
 
-    else if(Stack->canary_left_stack != (type_data) CANARY_LEFT_STACK)
+    else if(Stack->canary_left_stack != (int) CANARY_L_STACK)
     {
         //printf("2222\n");
         ERROR_STATE = ERROR_STACK_LEFT;
@@ -363,7 +403,7 @@ int stack_verify(stack_t* Stack)
         return ERROR_STACK_LEFT;
     }
 
-    else if(Stack->canary_right_stack != CANARY_RIGHT_STACK)
+    else if(Stack->canary_right_stack != CANARY_R_STACK)
     {
         ERROR_STATE = ERROR_STACK_RIGHT;
         //printf("1\n");
