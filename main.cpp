@@ -1,6 +1,11 @@
-#define CHAR_T
+#define STRING_T
+//#define LOW
+
 #include "stack.h"
-#undef CHAR_T
+
+//#undef LOW
+#undef STRING_T
+
 
 
 
@@ -16,27 +21,22 @@ int main()
     Construct(&Stack, 9);
     printf("00");
     stack_dump(&Stack);
-    printf("\nafter 1 dump\n");
+    //printf("\nafter 1 dump\n");
 
-    push_stack(&Stack, 'g');
-    printf("after 1 push\n");
+    push_stack(&Stack, "faa");
+    //printf("after 1 push\n");
 
-    push_stack(&Stack, 'h');
-    printf("after 2 push\n");
-
-    push_stack(&Stack, 'g');
-    printf("after 3 push\n");
     stack_dump(&Stack);
 
-    push_stack(&Stack, 'u');
+    push_stack(&Stack, "gaa");
     stack_dump(&Stack);
 
     //Stack.data[2] = 24;// hack of the stack
 
     pop_stack(&Stack);
     pop_stack(&Stack);
-    pop_stack(&Stack);
-    pop_stack(&Stack);
+    //pop_stack(&Stack);
+    //pop_stack(&Stack);
     stack_dump(&Stack);
 
     stack_destruct(&Stack);
@@ -47,10 +47,10 @@ int main()
 
     stack_dump(&Stack2);
 
-    push_stack(&Stack2, 'f');
+    push_stack(&Stack2, "jksbz");
     stack_dump(&Stack2);
 
-    printf("FUCKING INSANE");
+    //printf("FUCKING INSANE");
 
     return 0;
 }
