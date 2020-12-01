@@ -1,5 +1,8 @@
-#define DOUBLE_T
+#define CHAR_T
 #include "stack.h"
+#undef CHAR_T
+
+
 
 int main()
 {
@@ -10,27 +13,25 @@ int main()
 
     START_ACTIONS(Stack);
 
-    Construct(&Stack, 3);
+    Construct(&Stack, 9);
+    printf("00");
+    stack_dump(&Stack);
+    printf("\nafter 1 dump\n");
 
+    push_stack(&Stack, 'g');
+    printf("after 1 push\n");
+
+    push_stack(&Stack, 'h');
+    printf("after 2 push\n");
+
+    push_stack(&Stack, 'g');
+    printf("after 3 push\n");
     stack_dump(&Stack);
 
-    push_stack(&Stack, 5460);
-    stack_dump(&Stack);
-
-
-    push_stack(&Stack, 111);
-    push_stack(&Stack, 2);
-    push_stack(&Stack, 2);
-    stack_dump(&Stack);
-
-    push_stack(&Stack, 1);
+    push_stack(&Stack, 'u');
     stack_dump(&Stack);
 
     //Stack.data[2] = 24;// hack of the stack
-
-    push_stack(&Stack, 1);
-    push_stack(&Stack, 2);
-    stack_dump(&Stack);
 
     pop_stack(&Stack);
     pop_stack(&Stack);
@@ -42,12 +43,14 @@ int main()
     //stack_destruct(&Stack);
 
     START_ACTIONS(Stack2);
-    Construct(&Stack2, 4);
+    Construct(&Stack2, 5);
 
     stack_dump(&Stack2);
 
-    push_stack(&Stack2, 44);
+    push_stack(&Stack2, 'f');
     stack_dump(&Stack2);
+
+    printf("FUCKING INSANE");
 
     return 0;
 }
