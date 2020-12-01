@@ -1,9 +1,10 @@
-#define INT_T
+#define CHAR_T
 #include "stack.h"
+#undef CHAR_T
 
 int ERROR_STATE      = 0;
 int DOUBLE_CONSTRUCT = 0;
-char* addres         = "C:\\Users\\Danik\\Documents\\Задачи_СИ\\Projects\\Stack\\bin\\Debug\\log_stack.txt";
+char* addres   = "C:\\Users\\Danik\\Documents\\Задачи_СИ\\Projects\\Stack\\bin\\Debug\\log_stack.txt";
 
 
 void stack_construct(stack_t* Stack, int max_c, char* name)
@@ -55,8 +56,8 @@ void stack_construct(stack_t* Stack, int max_c, char* name)
 
     else
     {
-        Stack->data[0] = CANARY_LEFT_DATA;
-        Stack->data[max_c + 1] = CANARY_RIGHT_DATA;
+        Stack->data[0] = (type_data) CANARY_LEFT_DATA;
+        Stack->data[max_c + 1] = (type_data) CANARY_RIGHT_DATA;
 
         for(int i = 1; i < max_c + 1; i++)
         {
@@ -80,18 +81,19 @@ void stack_destruct(stack_t* Stack)
 
     Stack->data = nullptr;
 
-    Stack->cur_size = POISON;
-    Stack->capacity = POISON;
+    Stack->cur_size = POISON_SIZES;
+    Stack->capacity = POISON_SIZES;
 }
 
 void push_stack(stack_t* Stack, type_data push_num)
 {
     assert(push_num);
-
+    //printf("ffff\n");
     ASSERT_OK
 
     if(push_num >= POISON)
     {
+        //printf("ffff\n");
         stack_dump(Stack);
 
         return;
@@ -99,9 +101,16 @@ void push_stack(stack_t* Stack, type_data push_num)
 
     FILE* res = fopen("log_stack.txt", "ab");
 
-    if(fpclassify(push_num) != FP_NORMAL)
+    /*if(!isalpha(push_num))
+        if(isnan(push_num))
+        {
+            fclose(res);
+            stack_dump(Stack);
+            return;
+        }
+      */
+    if(isnan(push_num))
     {
-        fclose(res);
         stack_dump(Stack);
         return;
     }
@@ -127,10 +136,10 @@ void push_stack(stack_t* Stack, type_data push_num)
 type_data pop_stack(stack_t* Stack)
 {
     if(ERROR_STATE)
-        return NAN;
+        return POISON;
 
     if(stack_verify(Stack))
-        return NAN;
+        return POISON;
 
     if(Stack->cur_size <= Stack->capacity / REAL_MULTIPLIER + 1)
     {
@@ -151,7 +160,7 @@ type_data pop_stack(stack_t* Stack)
         return temp;
     }
 
-    return NAN;
+    return  POISON;
 }
 
 void stack_dump(stack_t* Stack)
@@ -159,14 +168,15 @@ void stack_dump(stack_t* Stack)
     char mass[67] = "******************************************************************";
 
     FILE* res = fopen("log_stack.txt", "ab");
-
+    printf("9\n");
     fprintf(res, "%*s\n", 66, mass);
-
-
+    printf("10\n");
+    //printf("7");
     if(ERROR_STATE)
     {
+        //printf("9");
         fprintf(res, "Stack (ERROR #%d : %s) [%p]. \n", ERROR_STATE, error_print(), Stack, Stack->hash_stack);
-
+        //printf("9");
         char* addres_n = "notepad ";
         char* addres_f = (char*) calloc(100, sizeof(char));
         addres_f = strcat(addres_f, addres_n);
@@ -184,7 +194,7 @@ void stack_dump(stack_t* Stack)
         //fprintf(res, "The Name is \"%s\"\n", Stack->name);
 
         char* type_string = "";
-
+        //printf("\n11\n");
         if(FORMAT == "lg")
         {
             type_string = "double";
@@ -216,16 +226,39 @@ void stack_dump(stack_t* Stack)
         fprintf(res, "Hash        = %d\n", Stack->hash_stack);
         fprintf(res, "size        = %d\n", Stack->cur_size);
         fprintf(res, "capacity    = %d\n", Stack->capacity);
-
+        printf("\nStack_dump\n");
         int cap = Stack->capacity;
         int cur = Stack->cur_size;
+        printf("capacity = ");
+        printf("%d\n", Stack->capacity);
+        printf("cur = ");
+        printf("%d", Stack->cur_size);
 
         for(int i = 0; i < cap; i++)
         {
-            if(i < cur) fprintf(res, "*[%d] data   = %" FORMAT "\n", i, Stack->data[i]);
-            else fprintf(res, "[%d]  data   = %" FORMAT " (POISON)\n", i, Stack->data[i]);
+            printf("\ni = %d\n", i);
+            if(i < cur)
+            {
+                printf("Stack ->data = ");
+                printf("%c", Stack->data[i]);
+                fprintf(res, "*[%d] data   = %" FORMAT "\n", i, Stack->data[i]);
+                printf("AFTER 1printf = %d", i);
+            }
 
+            else
+            {
+                printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+                printf(FORMAT);
+                printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+                printf("Stack ->data = ");
+                printf("%c\n", Stack->data[i]);
+                fprintf(res, "*[%d] data   = %" FORMAT " (POISON)\n", i, POISON);
+
+                printf("GOOD");
+
+            }
         }
+        printf("AFTER PRINTF all stack");
     }
 
 
@@ -238,84 +271,112 @@ int stack_verify(stack_t* Stack)
 
     if(Stack == nullptr)
     {
-
+    printf("2222\n");
         ERROR_STATE = NULL_STACK_PTR;
+        //printf("1\n");
         return NULL_STACK_PTR;
     }
 
     else if(Stack->hash_stack != hash_stack(Stack))
     {
+        printf("2222\n");
         ERROR_STATE = HACK_STACK;
+        //printf("1\n");
         return HACK_STACK;
     }
 
     else if(Stack->data == nullptr)
     {
+        printf("2222\n");
         ERROR_STATE = NULL_DATA_PTR;
+        //printf("1\n");
         return NULL_DATA_PTR;
     }
 
     else if(Stack->cur_size > Stack->capacity)
     {
         ERROR_STATE = CUR_BIGGER_CAPACITY;
+        //printf("1\n");
         return CUR_BIGGER_CAPACITY;
     }
 
     else if(Stack->cur_size < 0)
     {
+        printf("2222\n");
         ERROR_STATE = CUR_LESS_ZERO;
+        //printf("1\n");
         return CUR_LESS_ZERO;
 
     }
 
-    else if(fpclassify(Stack->capacity) != FP_NORMAL)
-    {
-        ERROR_STATE = CLASSIFY_CAPACITY;
-        return CLASSIFY_CAPACITY;
-    }
-
+    else if(isdigit(Stack->capacity))
+        {
+            if(!isnan(Stack->capacity))
+            {
+                printf("2222\n");
+                ERROR_STATE = CLASSIFY_CAPACITY;
+                //printf("1\n");
+                return CLASSIFY_CAPACITY;
+            }
+        }
     else if(Stack->capacity < 0)
     {
+        printf("2222\n");
         ERROR_STATE = CAPACITY_LESS_ZERO;
+        //printf("1\n");
         return CAPACITY_LESS_ZERO;
     }
 
 
-    else if(fpclassify(Stack->cur_size) != FP_NORMAL && Stack->cur_size > 0)
-    {
-        ERROR_STATE = CLASSIFY_CUR;
-        return CLASSIFY_CUR;
-    }
-
+    else if(isdigit(Stack->cur_size))
+        {
+            if(isnan(Stack->cur_size) && Stack->cur_size > 0)
+            {
+                printf("2222\n");
+                ERROR_STATE = CLASSIFY_CUR;
+                //printf("1\n");
+                return CLASSIFY_CUR;
+            }
+        }
     else if(Stack->data[-1] != CANARY_LEFT_DATA)
     {
+        printf("2222\n");
         ERROR_STATE = ERROR_DATA_LEFT;
+        //printf("1\n");
         return ERROR_DATA_LEFT;
 
     }
 
-    else if(Stack->data[Stack->capacity] != CANARY_RIGHT_DATA)
+    else if(Stack->data[Stack->capacity] != (type_data) CANARY_RIGHT_DATA)
     {
+        printf("2222\n");
         ERROR_STATE = ERROR_DATA_RIGHT;
+        //printf("1\n");
         return ERROR_DATA_RIGHT;
     }
 
-    else if(Stack->canary_left_stack != CANARY_LEFT_STACK)
+    else if(Stack->canary_left_stack != (type_data) CANARY_LEFT_STACK)
     {
+        //printf("2222\n");
         ERROR_STATE = ERROR_STACK_LEFT;
+        //printf("1\n");
         return ERROR_STACK_LEFT;
     }
 
     else if(Stack->canary_right_stack != CANARY_RIGHT_STACK)
     {
         ERROR_STATE = ERROR_STACK_RIGHT;
+        //printf("1\n");
         return ERROR_STACK_RIGHT;
     }
 
     else
     {
+        printf("1\n");
         return 0;
     }
+
+    //printf("3\n");
 }
 
 char* error_print()
@@ -369,7 +430,7 @@ void add_memory(stack_t* Stack)
         }
 
         Stack->data++;
-        Stack->data[Stack->capacity] = CANARY_RIGHT_DATA;
+        Stack->data[Stack->capacity] = (type_data) CANARY_RIGHT_DATA;
         hash_stack(Stack);
     }
 
@@ -383,7 +444,7 @@ void add_memory(stack_t* Stack)
             Stack->data[i] = POISON;
 
         Stack->data++;
-        Stack->data[Stack->capacity] = CANARY_RIGHT_DATA;
+        Stack->data[Stack->capacity] = (type_data) CANARY_RIGHT_DATA;
         hash_stack(Stack);
 
     }
@@ -401,7 +462,7 @@ void add_memory(stack_t* Stack)
         Stack->data = (type_data*) realloc(Stack->data - 1, (Stack->capacity + 2) * sizeof(type_data));
 
         Stack->data++;
-        Stack->data[Stack->capacity] = CANARY_RIGHT_DATA;
+        Stack->data[Stack->capacity] = (type_data) CANARY_RIGHT_DATA;
         hash_stack(Stack);
 
     }
@@ -428,6 +489,8 @@ int hash_stack(stack_t* Stack)
     double A = (sqrt(5) - 1) / 2;
 
 
+    double trash = 0;
+
     for(int i = 0; i < N; i++)
     {
         if(i > 0)
@@ -440,7 +503,7 @@ int hash_stack(stack_t* Stack)
 
         else
         {
-            Hash += (int) ( N * ((double) (A * Stack->data[i])  - (int) (A * Stack->data[i])));
+            Hash += (int) ( N *  modf(A * (int) Stack->data[i], &trash) );
             Hash += Stack->capacity;
             Hash += (int) Stack->data >> 2;
             Hash += (int) Stack->name >> Stack->cur_size % 3;
