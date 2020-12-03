@@ -8,14 +8,14 @@
 
 int ERROR_STATE      = 0;
 int DOUBLE_CONSTRUCT = 0;
-char* addres         = "C:\\Users\\Danik\\Documents\\Задачи_СИ\\Projects\\Stack\\bin\\Debug\\log_stack.txt";
+char* addres         = "bin\\Debug\\log_stack.txt";
 
 
 void stack_construct(stack_t* Stack, int max_c, char* name)
 {
     if(Stack == nullptr || DOUBLE_CONSTRUCT)
     {
-        ERROR_STATE = DOUBLE_CONSTRUCT;
+        ERROR_STATE = 1;
         stack_dump(Stack);
         return;
     }
@@ -181,7 +181,7 @@ void stack_dump(stack_t* Stack)
 
     FILE* res = fopen("log_stack.txt", "ab");
     fprintf(res, "%*s\n", 66, mass);
-    
+
     if(ERROR_STATE)
     {
         fprintf(res, "Stack (ERROR #%d : %s) [%p]. \nSecurity lvl is %s", ERROR_STATE, error_print(), Stack, Stack->hash_stack, sec_lvl);
@@ -218,7 +218,7 @@ void stack_dump(stack_t* Stack)
         {
             type_string = "ERROR";
         }
-        
+
         fprintf(res, "Security lvl is %s\n", sec_lvl);
         fprintf(res, "Type of data is %s\n", type_string);
         fprintf(res, "Hash        = %d\n", Stack->hash_stack);
