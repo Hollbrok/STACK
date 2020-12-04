@@ -21,6 +21,7 @@ enum
     ERROR_STACK_LEFT    = 11,
     ERROR_STACK_RIGHT   = 12,
     HACK_STACK          = 13,
+    MAX_CAPACITY_ERROR  = 14,
 };
 
 
