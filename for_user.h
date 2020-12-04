@@ -3,11 +3,11 @@
 
 
 #define STRING_T
-#define LOW_SECURE
+#define HIGH_SECURE
 
 #include "stack.h"
 
-#undef LOW_SECURE
+#undef HIGH_SECURE
 #undef STRING_T
 
 
