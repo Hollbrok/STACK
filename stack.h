@@ -83,22 +83,6 @@
     const int high_sec  = 1;
 #endif HIGH_SECURE
 
-
-struct stack_t
-{
-    int canary_left_stack;
-
-    type_data* data       = nullptr;
-    char* name            = nullptr;
-    int capacity          ;         //max size
-    int cur_size          ;         //size now
-    int hash_stack        ;
-
-    int canary_right_stack;
-
-};
-
-
 #define ASSERT_OK                                       \
     if (stack_verify(Stack))                            \
     {                                                   \
@@ -131,6 +115,19 @@ struct stack_t
             return;                                     \
         }
 
+struct stack_t
+{
+    int canary_left_stack;
+
+    type_data* data       = nullptr;
+    char* name            = nullptr;
+    int capacity          ;         //max size
+    int cur_size          ;         //size now
+    int hash_stack        ;
+
+    int canary_right_stack;
+
+};
 
 //-----------------------------------------------------------------------------
 //! @brief  Stack Construct
