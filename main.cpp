@@ -1,8 +1,13 @@
 #include "for_user.h"
 
+#define double iioavkvlanvla
 
-int main()
-{
+//-----------------------------------------------------------------------------
+#include "protect_for_hack.h"                                            // ЗАПРЕЩЕНО ПИСАТЬ ЮЗЕРУ В ЭТОЙ ЗОНЕ
+int main()                                                               // IT IS FORBIDDEN TO WRITE TO THE USER
+{                                                                        // IN THIS ZONE
+//-----------------------------------------------------------------------------
+
     setlocale(LC_ALL, "russian");
 
     FILE* res = fopen("log_stack.txt", "w");
