@@ -121,24 +121,122 @@ struct stack_t
         return POISON;                                  \
     }
 
+#define CHECK_CAP                                       \
+    if( ((FORMAT != "s") && (FORMAT != "c")             \
+       && (push_num >= POISON)                          \
+       || fpclassify(push_num) != FP_NORMAL))           \
+        {                                               \
+            stack_dump(Stack);                          \
+                                                        \
+            return;                                     \
+        }
+
+
+//-----------------------------------------------------------------------------
+//! @brief  Stack Construct
+//! @param [in] Stack - pointer to stack_t struct
+//! @param [in] max_c - maximum stack size at the time of construction
+//! @param [in] name  - name of the stack
+//! @author Hollbrok
+//! @version 1.2.9
+//! @brief
+//-----------------------------------------------------------------------------
+
 
 void stack_construct(stack_t* Stack, int max_c, char* name);
 
+//-----------------------------------------------------------------------------
+//! @brief  Stack Destruct
+//! @param [in] Stack - pointer to stack_t struct
+//! @author Hollbrok
+//! @version 0.1.5
+//! @brief
+//-----------------------------------------------------------------------------
+
 void stack_destruct(stack_t* Stack);
+
+//-----------------------------------------------------------------------------
+//! @brief  Push push_num to the stack
+//! @param [in] Stack - pointer to stack_t struct
+//! @param [in] push_num - puts this number (or char, string, other) to the stack
+//! @author Hollbrok
+//! @version 2.3.0
+//! @brief
+//-----------------------------------------------------------------------------
 
 void push_stack(stack_t* Stack, type_data push_num);
 
+//-----------------------------------------------------------------------------
+//! @brief  Outputs all current stack information to a file
+//! @param [in] Stack - pointer to stack_t struct
+//! @author Hollbrok
+//! @version 3.2.1.7
+//! @brief
+//-----------------------------------------------------------------------------
+
 void stack_dump(stack_t* Stack);
+
+
+//-----------------------------------------------------------------------------
+//! @brief  Increase / decrease memory for storing data on the stack
+//! @param [in] Stack - pointer to stack_t struct
+//! @author Hollbrok
+//! @version 2.2.2
+//! @brief
+//-----------------------------------------------------------------------------
 
 void add_memory(stack_t* Stack);
 
+//-----------------------------------------------------------------------------
+//! @brief  Pops a number off the stack
+//! @param [in] Stack - pointer to stack_t struct
+//! @brief [out] number - top number on the stack
+//! @author Hollbrok
+//! @version 1.5.0
+//! @brief
+//-----------------------------------------------------------------------------
+
 type_data pop_stack(stack_t* Stack);
+
+//-----------------------------------------------------------------------------
+//! @brief  Сhecks for the invalid stack
+//! @param [in] Stack - pointer to stack_t struct
+//! @brief [out] ERROR_STATE - zero if there are no errors, any number other than zero if there is anyone error
+//! @author Hollbrok
+//! @version 6.1.12
+//! @brief
+//-----------------------------------------------------------------------------
 
 int stack_verify(stack_t* Stack);
 
+//-----------------------------------------------------------------------------
+//! @brief  calculates the hash of the stack
+//! @param [in] Stack - pointer to stack_t struct
+//! @brief [out] Hash - hash of the stack
+//! @author Hollbrok
+//! @version 1.0.5
+//! @brief
+//-----------------------------------------------------------------------------
+
 int hash_stack(stack_t* Stack);
 
+//-----------------------------------------------------------------------------
+//! @brief  prints the error message, if there is an error
+//! @brief [out] char* - ERROR message
+//! @author Hollbrok
+//! @version 1.1.1
+//! @brief
+//-----------------------------------------------------------------------------
+
 char* error_print();
+
+//-----------------------------------------------------------------------------
+//! @brief  defines lvl of the security
+//! @brief [out] char* - lvl of the security
+//! @author Hollbrok
+//! @version 1.1.1
+//! @brief
+//-----------------------------------------------------------------------------
 
 char* define_lvl();
 
