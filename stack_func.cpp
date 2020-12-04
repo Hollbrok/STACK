@@ -7,6 +7,24 @@ char* addres         = "bin\\Debug\\log_stack.txt";
 
 void stack_construct(stack_t* Stack, int max_c, char* name)
 {
+
+    if(max_c < 0 || max_c >= 100000)
+    {
+        ERROR_STATE = 14;
+        char mass[67] = "******************************************************************";
+
+
+        FILE* res = fopen("log_stack.txt", "ab");
+
+        fprintf(res, "%*s\n", 66, mass);
+        fprintf(res, "ERROR IN MAX_C NUMBER\n");
+        fprintf(res, "%*s\n", 66, mass);
+
+        fclose(res);
+
+        return;
+    }
+
     if(Stack == nullptr || DOUBLE_CONSTRUCT)
     {
         ERROR_STATE = 1;
@@ -40,6 +58,7 @@ void stack_construct(stack_t* Stack, int max_c, char* name)
         ERROR_STATE = CAPACITY_LESS_ZERO;
         fprintf(res, "ERROR №%d: %s.\n", ERROR_STATE, error_print());
         fprintf(res, "******************************************************************\n");
+        fclose(res);
         return;
     }
 
@@ -90,11 +109,9 @@ void push_stack(stack_t* Stack, type_data push_num)
 
     FILE* res = fopen("log_stack.txt", "ab");
 
-    if(push_num >= POISON && (FORMAT != "s") && (FORMAT != "c"))
+    if(FORMAT != "s" && FORMAT != "c")
     {
-        stack_dump(Stack);
-
-        return;
+        //CHECK_CAP
     }
 
     if((FORMAT == "s") || (FORMAT == "c"))
@@ -170,16 +187,21 @@ type_data pop_stack(stack_t* Stack)
 
 void stack_dump(stack_t* Stack)
 {
+    if(ERROR_STATE == 14)
+    {
+        return;
+    }
+
     char* sec_lvl = define_lvl();
 
     char mass[67] = "******************************************************************";
 
     FILE* res = fopen("log_stack.txt", "ab");
-    fprintf(res, "%*s\n", 66, mass);
+    fprintf(res, "\n%*s\n", 66, mass);
 
     if(ERROR_STATE)
     {
-        fprintf(res, "Stack (ERROR #%d : %s) [%p]. \nSecurity lvl is %s", ERROR_STATE, error_print(), Stack, Stack->hash_stack, sec_lvl);
+        fprintf(res, "Stack (ERROR #%d : %s) [%p]. \nSecurity lvl is %s\n", ERROR_STATE, error_print(), Stack, Stack->hash_stack, sec_lvl);
         char* addres_n = "notepad ";
         char* addres_f = (char*) calloc(100, sizeof(char));
         addres_f = strcat(addres_f, addres_n);
@@ -243,8 +265,12 @@ void stack_dump(stack_t* Stack)
 
 int stack_verify(stack_t* Stack)
 {
+    if(ERROR_STATE == 14)
+    {
+        return MAX_CAPACITY_ERROR;
+    }
 
-    if((Stack == nullptr))
+    else if((Stack == nullptr))
     {
         ERROR_STATE = NULL_STACK_PTR;
         return NULL_STACK_PTR;
@@ -359,6 +385,8 @@ char* error_print()
             return "ERROR_STACK_RIGHT";
         case 13:
             return "Somebody is trying to hack a stack";
+        case 14:
+            return " MAX_CAPACITY_ERROR";
         default:
             return "ERROR IN error_print();\n";
 
