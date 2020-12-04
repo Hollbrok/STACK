@@ -1,12 +1,4 @@
-#define STRING_T
-#define LOW_SECURE
-
-#include "stack.h"
-
-#undef LOW_SECURE
-#undef STRING_T
-
-
+#include "for_user.h"
 
 
 int main()
