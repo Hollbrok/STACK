@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Stack" />
+		<Option pch_mode="2" />
+		<Option compiler="gnu_gcc_compiler__strict" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Stack" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gnu_gcc_compiler__strict" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Stack" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gnu_gcc_compiler__strict" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="for_user.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="protect_for_hack.h" />
+		<Unit filename="stack.h" />
+		<Unit filename="stack_config.h" />
+		<Unit filename="stack_func.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<DoxyBlocks>
+				<comment_style block="1" line="1" />
+				<doxyfile_project output_language="Russian" />
+				<doxyfile_build />
+				<doxyfile_warnings warn_if_undocumented="1" />
+				<doxyfile_output html_help="1" />
+				<doxyfile_dot class_diagrams="1" have_dot="1" />
+				<general use_at_in_tags="1" />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
