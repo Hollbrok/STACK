@@ -163,7 +163,8 @@ ______________
 ```C++
     stack_dump(&Stack);
 ```
-Результат вывода в файл:
+Результат вывода в файл: 
+
 ![Результат](https://github.com/Hollbrok/STACK/blob/main/Screenshot_3.png)
 
 _______
