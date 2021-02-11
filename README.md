@@ -164,7 +164,7 @@ ______________
     stack_dump(&Stack);
 ```
 Результат вывода в файл:
-![Image alt](https://github.com/{Hollbrok}/{STACK}/raw/{main}/image.png)
+![Результат](https://github.com/Hollbrok/STACK/blob/main/Screenshot_3.png)
 
 _______
 ### ~~Ded's weakness~~ cats 😻
