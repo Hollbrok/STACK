@@ -1,0 +1,94 @@
+******************************************************************
+Stack(OK) [0064FEDC]. "Stack"
+Type of data is double
+Hash        = 0
+size        = 0
+capacity    = 9
+*[0] data   = 1,#QNAN (POISON)
+*[1] data   = 1,#QNAN (POISON)
+*[2] data   = 1,#QNAN (POISON)
+*[3] data   = 1,#QNAN (POISON)
+*[4] data   = 1,#QNAN (POISON)
+*[5] data   = 1,#QNAN (POISON)
+*[6] data   = 1,#QNAN (POISON)
+*[7] data   = 1,#QNAN (POISON)
+*[8] data   = 1,#QNAN (POISON)
+******************************************************************
+
+******************************************************************
+Stack(OK) [0064FEDC]. "Stack"
+Type of data is double
+Hash        = 18643360
+size        = 3
+capacity    = 9
+*[0] data   = 103
+*[1] data   = 104
+*[2] data   = 103
+*[3] data   = 1,#QNAN (POISON)
+*[4] data   = 1,#QNAN (POISON)
+*[5] data   = 1,#QNAN (POISON)
+*[6] data   = 1,#QNAN (POISON)
+*[7] data   = 1,#QNAN (POISON)
+*[8] data   = 1,#QNAN (POISON)
+******************************************************************
+
+******************************************************************
+Stack(OK) [0064FEDC]. "Stack"
+Type of data is double
+Hash        = 19629752
+size        = 4
+capacity    = 9
+*[0] data   = 103
+*[1] data   = 104
+*[2] data   = 103
+*[3] data   = 117
+*[4] data   = 1,#QNAN (POISON)
+*[5] data   = 1,#QNAN (POISON)
+*[6] data   = 1,#QNAN (POISON)
+*[7] data   = 1,#QNAN (POISON)
+*[8] data   = 1,#QNAN (POISON)
+******************************************************************
+
+******************************************************************
+Stack(OK) [0064FEDC]. "Stack"
+Type of data is double
+Hash        = 0
+size        = 0
+capacity    = 9
+*[0] data   = 1,#QNAN (POISON)
+*[1] data   = 1,#QNAN (POISON)
+*[2] data   = 1,#QNAN (POISON)
+*[3] data   = 1,#QNAN (POISON)
+*[4] data   = 1,#QNAN (POISON)
+*[5] data   = 1,#QNAN (POISON)
+*[6] data   = 1,#QNAN (POISON)
+*[7] data   = 1,#QNAN (POISON)
+*[8] data   = 1,#QNAN (POISON)
+******************************************************************
+
+******************************************************************
+Stack(OK) [0064FEC0]. "Stack2"
+Type of data is double
+Hash        = 0
+size        = 0
+capacity    = 5
+*[0] data   = 1,#QNAN (POISON)
+*[1] data   = 1,#QNAN (POISON)
+*[2] data   = 1,#QNAN (POISON)
+*[3] data   = 1,#QNAN (POISON)
+*[4] data   = 1,#QNAN (POISON)
+******************************************************************
+
+******************************************************************
+Stack(OK) [0064FEC0]. "Stack2"
+Type of data is double
+Hash        = 4123224
+size        = 1
+capacity    = 5
+*[0] data   = 102
+*[1] data   = 1,#QNAN (POISON)
+*[2] data   = 1,#QNAN (POISON)
+*[3] data   = 1,#QNAN (POISON)
+*[4] data   = 1,#QNAN (POISON)
+******************************************************************
+
