@@ -11,6 +11,7 @@
 #include <limits.h>
 #include <typeinfo>
 #include <ctype.h>
+#include <conio.h>
 #include "stack_config.h"
 
 #ifdef DOUBLE_T
@@ -69,19 +70,19 @@
     const int low_sec   = 1;
     const int med_sec   = 0;
     const int high_sec  = 0;
-#endif LOW_SECURE
+#endif
 
 #ifdef MEDIUM_SECURE    // все проверки, кроме хэширования и канареек
     const int low_sec   = 0;
     const int med_sec   = 1;
     const int high_sec  = 0;
-#endif MEDIUM_SECURE
+#endif
 
 #ifdef HIGH_SECURE      // все проверки
     const int low_sec   = 0;
     const int med_sec   = 0;
     const int high_sec  = 1;
-#endif HIGH_SECURE
+#endif
 
 #define ASSERT_OK                                    \
     if (stack_verify(Stack))                         \
@@ -121,9 +122,9 @@ struct stack_t
 
     type_data* data       = nullptr;
     char* name            = nullptr;
-    int capacity          ;         //max size
-    int cur_size          ;         //size now
-    int hash_stack        ;
+    int capacity          = 0;         //max size
+    int cur_size          = 0;         //size now
+    int hash_stack        = 0;
 
     int canary_right_stack;
 
