@@ -1,5 +1,5 @@
 # STACK
-## Основная информация об проекте.
+## Основная информация об проекте (Этот же проект только на C++ [__клик__](https://github.com/Hollbrok/Stack_cpp_version)).
 
 <a class="github-button" href="https://github.com/Hollbrok" data-show-count="true" aria-label="Follow @Hollbrok on GitHub">Follow</a>
 
